@@ -19,8 +19,6 @@ int summ = 0; //
 DateTime? taskDay;
 TimeOfDay? taskTime;
 
-//xato logika ,o'zgaruvchilarni global e'lon qilish xato,
-// men malumotni narigi page ga qanday olib o'tay
 
 class _QarzAddScreenState extends State<QarzAddScreen> {
   @override
@@ -169,16 +167,17 @@ class _QarzAddScreenState extends State<QarzAddScreen> {
                           primary: Colors.lightBlueAccent,
                           elevation: 0),
                       onPressed: () async {
-                        LocalDatabase.insertCachedUser(CachedUser(
+                      await  LocalDatabase.insertCachedUser(
+                          CachedUser(
                             userName: Name,
                             date: (taskDay ?? DateTime.now()).toString(),
-                            summ: Price));
-                        var cachedUsers =
-                            await LocalDatabase.getAllCachedUsers();
-                        widget.cachedUserListener.call(cachedUsers);
-                        setState(() {
-                          Navigator.pop(context);
-                        });
+                            summ: Price,
+                          ),
+                        );
+                        var cachedUsers = await LocalDatabase.getAllCachedUsers();
+                       setState(() {
+                         widget.cachedUserListener.call(cachedUsers);
+                       });
                       },
                       child: const Text("Saqlash")),
                 ],

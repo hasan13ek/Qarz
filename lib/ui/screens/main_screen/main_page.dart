@@ -1,3 +1,4 @@
+import 'package:first_lesson/data/local/local_database.dart';
 import 'package:first_lesson/data/models/cached_user.dart';
 import 'package:first_lesson/ui/screens/main_screen/qarz_add.dart';
 import 'package:first_lesson/ui/screens/main_screen/qarz_view.dart';
@@ -23,14 +24,23 @@ class _MainScreenState extends State<MainScreen> {
       QarzAddScreen(
         cachedUserListener: (cachedUsersFromAddScreen) {
           setState(() {
-            cachedUsers = cachedUsersFromAddScreen;
+            _pages[1] = QarzViewScreen(cachedUsers: cachedUsersFromAddScreen);
           });
         },
       ),
       QarzViewScreen(cachedUsers: cachedUsers)
     ];
 
+    _init();
+
     super.initState();
+  }
+
+  _init() async {
+    var d = await LocalDatabase.getAllCachedUsers();
+    setState(() {
+      _pages[1] = QarzViewScreen(cachedUsers: d);
+    });
   }
 
   @override
@@ -58,8 +68,6 @@ class _MainScreenState extends State<MainScreen> {
                 _selectedIndex = index;
               });
             },
-            //unisntall qilib natijani menga ayting
-            //hop
             elevation: 0,
             selectedItemColor: Colors.blue,
             unselectedItemColor: Colors.white,

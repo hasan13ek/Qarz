@@ -1,6 +1,5 @@
 import 'package:first_lesson/data/local/local_database.dart';
 import 'package:first_lesson/data/models/cached_user.dart';
-import 'package:first_lesson/ui/screens/main_screen/qarz_add.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -38,27 +37,23 @@ class _QarzViewScreenState extends State<QarzViewScreen> {
           statusBarColor: Colors.lightBlueAccent,
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-              child: ListView(
-            children: List.generate(cachedUsers.length, (index) {
-              var item = cachedUsers[index];
-              return ListTile(
-                title: Text(item.userName),
-                subtitle: Text(item.id.toString()),
-                trailing: IconButton(
-                  onPressed: () async {
-                    LocalDatabase.deleteCachedUserById(item.id!);
-                    cachedUsers = await LocalDatabase.getAllCachedUsers();
-                    setState(() {});
-                  },
-                  icon: const Icon(Icons.delete),
-                ),
-              );
-            }),
-          ))
-        ],
+      body: ListView(
+        children: List.generate(cachedUsers.length, (index) {
+
+      var item = cachedUsers[index];
+      return ListTile(
+        title: Text(item.userName),
+        subtitle: Text(item.id.toString()),
+        trailing: IconButton(
+          onPressed: () async {
+           await LocalDatabase.deleteCachedUserById(item.id!);
+            cachedUsers = await LocalDatabase.getAllCachedUsers();
+            setState(() {});
+          },
+          icon: const Icon(Icons.delete),
+        ),
+      );
+        }),
       ),
     );
   }
